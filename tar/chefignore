@@ -82,16 +82,12 @@ Berksfile.lock
 cookbooks/*
 tmp
 
-# Policyfile #
-##############
-Policyfile.rb
-Policyfile.lock.json
-
 # Cookbooks #
 #############
 CONTRIBUTING*
 CHANGELOG*
 TESTING*
+MAINTAINERS.toml
 
 # Strainer #
 ############

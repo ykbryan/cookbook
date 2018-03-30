@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "application_javascript": "~> 1.0.0",
-    "tar": "~> 2.1.1"
+    "tar": "~> 2.0.0"
   },
   "recommendations": {
   },

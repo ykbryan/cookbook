@@ -1,5 +1,5 @@
 #
-# Cookbook:: tar
+# Cookbook Name:: tar
 # Resource:: extract
 #
 # Author:: Nathan L Smith (<nathan@cramerdev.com>)
@@ -26,7 +26,7 @@
 property :source,                String, name_property: true
 property :checksum,              String
 property :download_dir,          String, default: Chef::Config[:file_cache_path]
-property :group,                 String, default: node['root_group']
+property :group,                 String, default: 'root'
 property :mode,                  String, default: '0755'
 property :target_dir,            String
 property :creates,               String
@@ -34,11 +34,11 @@ property :compress_char,         String, default: 'z'
 property :tar_flags,             [String, Array], default: []
 property :user,                  String, default: 'root'
 property :headers,               Hash
-property :use_etag,              [true, false], default: true
-property :use_last_modified,     [true, false], default: true
-property :atomic_update,         [true, false], default: true
-property :force_unlink,          [true, false], default: false
-property :manage_symlink_source, [true, false]
+property :use_etag,              [TrueClass, FalseClass], default: true
+property :use_last_modified,     [TrueClass, FalseClass], default: true
+property :atomic_update,         [TrueClass, FalseClass], default: true
+property :force_unlink,          [TrueClass, FalseClass], default: false
+property :manage_symlink_source, [TrueClass, FalseClass]
 
 require 'shellwords'
 
@@ -78,9 +78,8 @@ action :extract_local do
   extract_tar(new_resource.name, new_resource)
 end
 
-action_class do
+action_class.class_eval do
   def extract_tar(local_archive, r)
-    directory r.target_dir
     execute "extract #{local_archive}" do
       flags = if r.tar_flags.is_a?(String)
                 r.tar_flags

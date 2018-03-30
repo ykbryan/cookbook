@@ -1,5 +1,5 @@
 #
-# Cookbook:: tar
+# Cookbook Name:: tar
 # Resource:: package
 #
 # Author:: Nathan L Smith (<nathan@cramerdev.com>)
@@ -19,29 +19,25 @@
 # limitations under the License.
 #
 
-property :source,                String, name_property: true
-property :headers,               Hash,   default: {}
-property :prefix,                String
-property :source_directory,      String, default: '/usr/local/src'
-property :creates,               String
-property :configure_flags,       Array, default: []
-property :archive_name,          String
-property :headers,               Hash
-property :use_etag,              [true, false], default: true
-property :use_last_modified,     [true, false], default: true
-property :atomic_update,         [true, false], default: true
-property :force_unlink,          [true, false], default: false
-property :manage_symlink_source, [true, false]
+attribute :source,                String, name_attribute: true
+attribute :headers,               Hash,   default: {}
+attribute :prefix,                String
+attribute :source_directory,      String, default: '/usr/local/src'
+attribute :creates,               String
+attribute :configure_flags,       Array, default: []
+attribute :archive_name,          String
+attribute :headers,               Hash
+attribute :use_etag,              [TrueClass, FalseClass], default: true
+attribute :use_last_modified,     [TrueClass, FalseClass], default: true
+attribute :atomic_update,         [TrueClass, FalseClass], default: true
+attribute :force_unlink,          [TrueClass, FalseClass], default: false
+attribute :manage_symlink_source, [TrueClass, FalseClass]
 
 action :install do
   r = new_resource
   basename = r.archive_name || ::File.basename(r.name)
   dirname = basename.chomp('.tar.gz') # Assuming .tar.gz
   src_dir = r.source_directory
-
-  directory src_dir do
-    recursive true
-  end
 
   remote_file basename do
     source r.name
@@ -64,7 +60,7 @@ action :install do
 
   execute "compile & install #{dirname}" do
     flags = [r.prefix ? "--prefix=#{r.prefix}" : nil, *r.configure_flags].compact.join(' ')
-    command "./configure --quiet #{flags} && make -s && make -s install"
+    command "./configure --quiet #{flags} && make --quiet && make --quiet install"
     cwd "#{src_dir}/#{dirname}"
     creates r.creates
   end

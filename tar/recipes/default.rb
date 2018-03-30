@@ -1,5 +1,5 @@
 #
-# Cookbook:: tar
+# Cookbook Name:: tar
 # Recipe:: default
 #
 # Author:: Nathan L Smith (<nathan@cramerdev.com>)
@@ -19,4 +19,4 @@
 # limitations under the License.
 #
 
-package 'tar' unless platform_family?('freebsd')
+package 'tar'
