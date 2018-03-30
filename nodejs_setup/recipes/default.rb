@@ -10,23 +10,29 @@ application app_path do
   environment.update("PORT" => "80")
   environment.update(app["environment"])
 
-  if app['type'] == 's3'
-    # windows_zipfile "#{app["app_path"]}" do
-    #   source app["app_source"]["url"]
-    #   action :unzip
-    #   overwrite true
-    # end
-    tar_extract app["app_source"]["url"] do
-      target_dir app["app_path"]
-      tar_flags [ '--strip-components 1' ]
-      action :extract
-    end
-  else
-    git app_path do
-      repository app["app_source"]["url"]
-      revision app["app_source"]["revision"]
-    end
+  tar_extract app["app_source"]["url"] do
+    target_dir app["app_path"]
+    tar_flags [ '--strip-components 1' ]
+    action :extract
   end
+
+  # if app['type'] == 's3'
+  #   windows_zipfile "#{app["app_path"]}" do
+  #     source app["app_source"]["url"]
+  #     action :unzip
+  #     overwrite true
+  #   end
+  #   tar_extract app["app_source"]["url"] do
+  #     target_dir app["app_path"]
+  #     tar_flags [ '--strip-components 1' ]
+  #     action :extract
+  #   end
+  # else
+  #   git app_path do
+  #     repository app["app_source"]["url"]
+  #     revision app["app_source"]["revision"]
+  #   end
+  # end
 
   link "#{app_path}/server.js" do
     to "#{app_path}/index.js"
