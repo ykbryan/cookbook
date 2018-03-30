@@ -14,15 +14,19 @@ application app_path do
   environment.update("PORT" => "80")
   environment.update(app["environment"])
 
-  remote_file '/tmp/code.zip' do
-    source app["app_source"]["url"]
-    mode '0755'
-    action :create
+  tar_package app["app_source"]["url"] do
+    source_directory app["app_path"]
   end
+  #
+  # remote_file '/tmp/code.zip' do
+  #   source app["app_source"]["url"]
+  #   mode '0755'
+  #   action :create
+  # end
 
   bash 'extract_code_zip' do
     cwd app["app_path"]
-    code 'unzip /tmp/code.zip'
+    code 'unzip *.zip'
   end
 
   # if app['type'] == 's3'
