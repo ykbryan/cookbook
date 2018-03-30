@@ -14,8 +14,8 @@ application app_path do
   environment.update("PORT" => "80")
   environment.update(app["environment"])
 
-  remote_file app["app_source"]["url"] do
-    source '/tmp/code.zip'
+  remote_file '/tmp/code.zip' do
+    source app["app_source"]["url"]
     mode '0755'
     action :create
   end
