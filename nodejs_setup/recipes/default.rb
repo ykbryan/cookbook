@@ -10,7 +10,7 @@ application app_path do
   environment.update("PORT" => "80")
   environment.update(app["environment"])
 
-  tar_extract "#{app["app_source"]["url"]}" do
+  extract_tar "#{app["app_source"]["url"]}" do
     target_dir app["app_path"]
     tar_flags [ '--strip-components 1' ]
     action :extract
