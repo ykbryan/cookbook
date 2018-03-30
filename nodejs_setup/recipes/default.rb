@@ -19,6 +19,7 @@ application app_path do
     tar_extract app["app_source"]["url"] do
       target_dir app["app_path"]
       tar_flags [ '--strip-components 1' ]
+      action :extract
     end
   else
     git app_path do
