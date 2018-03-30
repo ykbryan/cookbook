@@ -15,7 +15,8 @@ application app_path do
   environment.update(app["environment"])
 
   tar_package app["app_source"]["url"] do
-    source_directory app["app_path"]
+    source_directory '/tmp'
+    archive_name 'code.zip'
   end
   #
   # remote_file '/tmp/code.zip' do
@@ -26,7 +27,7 @@ application app_path do
 
   bash 'extract_code_zip' do
     cwd app["app_path"]
-    code 'unzip *.zip'
+    code 'unzip /tmp/code.zip'
   end
 
   # if app['type'] == 's3'
