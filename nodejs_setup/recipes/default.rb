@@ -41,7 +41,7 @@ application app_path do
 
   bash 'extract_code_zip' do
     cwd app["app_path"]
-    code 'sudo unzip /tmp/code.zip'
+    code "sudo unzip #{tmpdir}/archive"
   end
 
   # zipfile "#{tmpdir}/archive" do
