@@ -41,8 +41,9 @@ application app_path do
 
   execute 'extract_code' do
     cwd app["app_path"]
+    user 'root'
     retries 3
-    command "sudo unzip #{tmpdir}/archive"
+    command "unzip #{tmpdir}/archive"
     action :run
   end
 
