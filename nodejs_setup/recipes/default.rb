@@ -51,7 +51,8 @@ application app_path do
     cwd "#{app_path}"
     user 'root'
     retries 3
-    command "cd #{app_path} && unzip -o #{tmpdir}/archive"
+    # command "cd #{app_path} && unzip -o #{tmpdir}/archive"
+    command "unzip -o #{tmpdir}/archive"
     action :run
   end
 
