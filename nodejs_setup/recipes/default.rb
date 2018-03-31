@@ -24,12 +24,17 @@ application app_path do
 
   tmpdir = Dir.mktmpdir("opsworks")
   directory tmpdir do
+    owner 'ec2-user'
+    group 'ec2-user'
     mode 0755
   end
 
   aws_s3_file "#{tmpdir}/archive" do
     bucket s3_bucket
     remote_path s3_remote_path
+    owner 'ec2-user'
+    group 'ec2-user'
+    mode 0755
     retries 3
   end
 
