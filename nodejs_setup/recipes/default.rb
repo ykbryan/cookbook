@@ -1,6 +1,13 @@
 app = search(:aws_opsworks_app).first
 app_path = "/srv/#{app['shortname']}"
 
+directory "#{app_path}" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 uri = URI.parse(app["app_source"]["url"])
 uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
 virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
@@ -39,13 +46,6 @@ end
 
 file "#{tmpdir}/archive" do
   mode '0755'
-end
-
-directory "#{app_path}" do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
 end
 
 execute 'extract_code' do
