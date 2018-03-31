@@ -53,6 +53,11 @@ application app_path do
     to "#{app_path}/index.js"
   end
 
+  npm_install do
+    retries 3
+    retry_delay 10
+  end
+
   npm_start do
     action [:stop, :enable, :start]
   end
