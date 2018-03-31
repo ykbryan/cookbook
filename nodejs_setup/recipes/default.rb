@@ -41,6 +41,13 @@ file "#{tmpdir}/archive" do
   mode '0755'
 end
 
+directory "#{app_path}" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 execute 'extract_code' do
   cwd "#{app_path}"
   retries 3
