@@ -43,10 +43,9 @@ end
 
 execute 'extract_code' do
   cwd "#{app_path}"
-  user 'root'
   retries 3
-  # command "cd #{app_path} && unzip -o #{tmpdir}/archive"
-  command "unzip -o #{tmpdir}/archive"
+  command "cd #{app_path} && sudo unzip -o #{tmpdir}/archive"
+  # command "unzip -o #{tmpdir}/archive"
 end
 
 application "#{app_path}" do
@@ -59,9 +58,9 @@ application "#{app_path}" do
   #   revision app["app_source"]["revision"]
   # end
 
-  link "#{app_path}/server.js" do
-    to "#{app_path}/index.js"
-  end
+  # link "#{app_path}/server.js" do
+  #   to "#{app_path}/index.js"
+  # end
 
   # npm_install do
   #   retries 3
