@@ -25,7 +25,7 @@ s3_base_uri.to_s.chomp!("/")
 #   options "--force-yes" if node["platform"] == "ubuntu" && node["platform_version"] == "14.04"
 # end
 
-application app_path do
+application "#{app_path}" do
   javascript "4"
   environment.update("PORT" => "80")
   environment.update(app["environment"])
@@ -64,12 +64,12 @@ application app_path do
     to "#{app_path}/index.js"
   end
 
-  npm_install do
-    retries 3
-    retry_delay 10
-  end
+  # npm_install do
+  #   retries 3
+  #   retry_delay 10
+  # end
 
   npm_start do
-    action [:stop, :enable, :start]
+    action [:stop, :enable, :start, :restart]
   end
 end
