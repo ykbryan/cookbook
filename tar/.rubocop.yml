@@ -1,5 +1,0 @@
-# rubocop todo
-
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'resources/extract.rb'

@@ -1,62 +1,48 @@
 app = search(:aws_opsworks_app).first
 app_path = "/srv/#{app['shortname']}"
 
-package "git" do
-  options "--force-yes" if node["platform"] == "ubuntu" && node["platform_version"] == "14.04"
+uri = URI.parse(app["app_source"]["url"])
+uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
+virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
+s3_base_uri = uri.dup
+
+if virtual_host_match
+  s3_bucket = virtual_host_match[1]
+  s3_base_uri.path = "/"
+else
+  s3_bucket = uri_path_components[0]
+  s3_base_uri.path = "/#{uri_path_components.shift}"
 end
 
-package 'unzip' do
-    action :install
-end
+s3_remote_path = uri_path_components.join("/")
+s3_base_uri.to_s.chomp!("/")
 
 application app_path do
   javascript "4"
   environment.update("PORT" => "80")
   environment.update(app["environment"])
 
-  tar_package app["app_source"]["url"] do
-    source_directory '/tmp'
-    archive_name 'code.zip'
-  end
-  #
-  # remote_file '/tmp/code.zip' do
-  #   source app["app_source"]["url"]
-  #   mode '0755'
-  #   action :create
-  # end
-
-  bash 'extract_code_zip' do
-    cwd app["app_path"]
-    code 'unzip /tmp/code.zip'
+  tmpdir = Dir.mktmpdir("opsworks")
+  directory tmpdir do
+    mode 0755
   end
 
-  # if app['type'] == 's3'
-  #   windows_zipfile "#{app["app_path"]}" do
-  #     source app["app_source"]["url"]
-  #     action :unzip
-  #     overwrite true
-  #   end
-  #   tar_extract app["app_source"]["url"] do
-  #     target_dir app["app_path"]
-  #     tar_flags [ '--strip-components 1' ]
-  #     action :extract
-  #   end
-  # else
-  #   git app_path do
-  #     repository app["app_source"]["url"]
-  #     revision app["app_source"]["revision"]
-  #   end
-  # end
+  aws_s3_file "#{tmpdir}/archive" do
+    bucket s3_bucket
+    remote_path s3_remote_path
+    retries 3
+  end
+
+  zipfile "#{tmpdir}/archive" do
+    into "#{app_path}"
+    overwrite true
+  end
 
   link "#{app_path}/server.js" do
     to "#{app_path}/index.js"
   end
 
-  npm_install do
-    retries 3
-    retry_delay 10
-  end
-
+  npm_install
   npm_start do
     action [:stop, :enable, :start]
   end
