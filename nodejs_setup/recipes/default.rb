@@ -53,7 +53,6 @@ application app_path do
     to "#{app_path}/index.js"
   end
 
-  npm_install
   npm_start do
     action [:stop, :enable, :start]
   end
