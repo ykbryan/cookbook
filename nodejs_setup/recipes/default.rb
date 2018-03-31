@@ -9,6 +9,14 @@ directory "#{app_path}" do
   action :create
 end
 
+directory "#{app_path}/node_modules" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  recursive true
+  action :create
+end
+
 uri = URI.parse(app["app_source"]["url"])
 uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
 virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
