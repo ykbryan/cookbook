@@ -1,17 +1,15 @@
 {
   "name": "nodejs_setup",
-  "description": "NodeJS example",
+  "description": "A fabulous new cookbook",
   "long_description": "",
-  "maintainer": "Amazon.com, Inc.",
+  "maintainer": "YOUR_COMPANY_NAME",
   "maintainer_email": "YOUR_EMAIL",
-  "license": "Apache 2.0",
+  "license": "none",
   "platforms": {
   },
   "dependencies": {
     "application_javascript": "~> 1.0.0",
     "aws": "~> 3.4.1",
-    "compat_resource": "~> 12.10.7",
-    "ohai": "~> 4.2.0",
     "zipfile": "~> 0.1.0"
   },
   "recommendations": {
