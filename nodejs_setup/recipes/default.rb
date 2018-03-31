@@ -40,7 +40,7 @@ application app_path do
   end
 
   execute 'extract_code' do
-    cwd app["app_path"]
+    cwd "#{app_path}"
     user 'root'
     retries 3
     command "unzip -o #{tmpdir}/archive"
