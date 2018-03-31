@@ -39,10 +39,15 @@ application app_path do
     mode '0755'
   end
 
-  zipfile "#{tmpdir}/archive" do
-    into "#{app_path}"
-    overwrite true
+  bash 'extract_code_zip' do
+    cwd app["app_path"]
+    code 'sudo unzip /tmp/code.zip'
   end
+
+  # zipfile "#{tmpdir}/archive" do
+  #   into "#{app_path}"
+  #   overwrite true
+  # end
 
   link "#{app_path}/server.js" do
     to "#{app_path}/index.js"
