@@ -25,35 +25,34 @@ s3_base_uri.to_s.chomp!("/")
 #   options "--force-yes" if node["platform"] == "ubuntu" && node["platform_version"] == "14.04"
 # end
 
+tmpdir = Dir.mktmpdir("opsworks")
+directory tmpdir do
+  owner 'ec2-user'
+  group 'ec2-user'
+  mode 0755
+end
+
+s3_file "#{tmpdir}/archive" do
+  bucket s3_bucket
+  remote_path s3_remote_path
+end
+
+file "#{tmpdir}/archive" do
+  mode '0755'
+end
+
+execute 'extract_code' do
+  cwd "#{app_path}"
+  user 'root'
+  retries 3
+  # command "cd #{app_path} && unzip -o #{tmpdir}/archive"
+  command "unzip -o #{tmpdir}/archive"
+end
+
 application "#{app_path}" do
   javascript "4"
   environment.update("PORT" => "80")
   environment.update(app["environment"])
-
-  tmpdir = Dir.mktmpdir("opsworks")
-  directory tmpdir do
-    owner 'ec2-user'
-    group 'ec2-user'
-    mode 0755
-  end
-
-  s3_file "#{tmpdir}/archive" do
-    bucket s3_bucket
-    remote_path s3_remote_path
-  end
-
-  file "#{tmpdir}/archive" do
-    mode '0755'
-  end
-
-  execute 'extract_code' do
-    cwd "#{app_path}"
-    user 'root'
-    retries 3
-    # command "cd #{app_path} && unzip -o #{tmpdir}/archive"
-    command "unzip -o #{tmpdir}/archive"
-    action :run
-  end
 
   # git app_path do
   #   repository app["app_source"]["url"]
