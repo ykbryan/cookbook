@@ -50,7 +50,7 @@ end
 
 execute 'extract_code' do
   cwd "#{app_path}"
-  retries 3
+  retries 1
   command "cd #{app_path} && sudo unzip -o #{tmpdir}/archive"
   # command "unzip -o #{tmpdir}/archive"
 end
@@ -69,10 +69,10 @@ application "#{app_path}" do
   #   to "#{app_path}/index.js"
   # end
 
-  # npm_install do
-  #   retries 3
-  #   retry_delay 10
-  # end
+  npm_install do
+    retries 3
+    retry_delay 10
+  end
 
   npm_start do
     action [:stop, :enable, :start, :restart]
