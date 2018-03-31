@@ -5,7 +5,7 @@ directory "#{app_path}" do
   owner 'root'
   group 'root'
   mode '0777'
-  recursive True
+  recursive true
   action :create
 end
 
