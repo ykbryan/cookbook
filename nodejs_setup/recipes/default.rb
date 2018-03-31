@@ -4,7 +4,8 @@ app_path = "/srv/#{app['shortname']}"
 directory "#{app_path}" do
   owner 'root'
   group 'root'
-  mode '0755'
+  mode '0777'
+  recursive True
   action :create
 end
 
