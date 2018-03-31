@@ -35,6 +35,10 @@ application app_path do
     retries 3
   end
 
+  file "#{tmpdir}/archive" do
+    mode '0755'
+  end
+
   zipfile "#{tmpdir}/archive" do
     into "#{app_path}"
     overwrite true
