@@ -43,7 +43,7 @@ application app_path do
     cwd app["app_path"]
     user 'root'
     retries 3
-    command "unzip #{tmpdir}/archive"
+    command "unzip -o #{tmpdir}/archive"
     action :run
   end
 
