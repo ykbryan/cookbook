@@ -1,10 +1,10 @@
 {
   "name": "nodejs_setup",
-  "description": "A fabulous new cookbook",
+  "description": "NodeJS example",
   "long_description": "",
-  "maintainer": "YOUR_COMPANY_NAME",
+  "maintainer": "Amazon.com, Inc.",
   "maintainer_email": "YOUR_EMAIL",
-  "license": "none",
+  "license": "Apache 2.0",
   "platforms": {
   },
   "dependencies": {
