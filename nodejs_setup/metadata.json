@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "application_javascript": "~> 1.0.0",
-    "zipfile": "~> 0.1.0"
+    "zipfile": "~> 0.1.0",
+    "s3_file": "~> 2.6.6"
   },
   "recommendations": {
   },
