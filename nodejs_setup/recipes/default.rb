@@ -39,9 +39,8 @@ application app_path do
     mode '0755'
   end
 
-  bash 'extract_code_zip' do
-    cwd app["app_path"]
-    code "sudo unzip #{tmpdir}/archive"
+  execute 'extract_code' do
+    command "cd #{app["app_path"]} && sudo unzip #{tmpdir}/archive"
   end
 
   # zipfile "#{tmpdir}/archive" do
