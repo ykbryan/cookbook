@@ -40,7 +40,10 @@ application app_path do
   end
 
   execute 'extract_code' do
-    command "cd #{app["app_path"]} && sudo unzip #{tmpdir}/archive"
+    cwd app["app_path"]
+    retries 3
+    command "sudo unzip #{tmpdir}/archive"
+    action :run
   end
 
   # zipfile "#{tmpdir}/archive" do
